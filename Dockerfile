@@ -38,8 +38,11 @@ RUN docker-php-ext-install gd intl pdo_mysql mysqli zip soap exif bcmath \
     && docker-php-ext-enable exif \
     && pecl install imagick \
     && docker-php-ext-enable imagick
-    # && pecl install xdebug-3.0.0 && docker-php-ext-enable xdebug
 
+# install node
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get update && apt-get install -y nodejs \
+    && node --version && npm --version
 
 # Install Composer
 ENV COMPOSER_VERSION 2.6.5
@@ -47,7 +50,7 @@ RUN \
     curl -sSL https://github.com/composer/composer/releases/download/$COMPOSER_VERSION/composer.phar -o /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer
 
-RUN cd /var/www/html && composer create-project mautic/recommended-project:^4 mautic --no-interaction
+RUN cd /var/www/html && COMPOSER_PROCESS_TIMEOUT=2000 composer create-project mautic/recommended-project:^5 mautic --no-interaction
 
 WORKDIR /var/www/html/mautic
 
