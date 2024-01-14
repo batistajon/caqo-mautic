@@ -51,10 +51,6 @@ RUN \
     curl -sSL https://github.com/composer/composer/releases/download/$COMPOSER_VERSION/composer.phar -o /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer
 
-COPY .docker/php/php.ini /usr/local/etc/php/php.ini
-
-RUN cd /var/www/html && COMPOSER_PROCESS_TIMEOUT=2000 composer create-project mautic/recommended-project:^5 mautic --no-interaction
-
 WORKDIR /var/www/html/mautic
 
 RUN a2enmod rewrite
